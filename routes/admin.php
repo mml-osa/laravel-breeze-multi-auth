@@ -25,13 +25,14 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('admin.password.store');
     });
 
-    Route::middleware('auth:admin')->group(function () {
+    Route::middleware('admin.auth:admin')->group(function () {
         Route::get('/verify-email', EmailVerificationPromptController::class)->name('admin.verification.notice');
         Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['signed', 'throttle:6,1'])->name('admin.verification.verify');
         Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->middleware('throttle:6,1')->name('admin.verification.send');
         Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('admin.password.confirm');
         Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store']);
         Route::put('/password', [PasswordController::class, 'update'])->name('admin.password.update');
+        Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
         Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
     });
 

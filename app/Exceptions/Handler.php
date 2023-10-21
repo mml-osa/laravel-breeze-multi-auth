@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +30,32 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof TokenMismatchException) {
+            if (Auth::guard('web')->check()){
+                return redirect(route('logout'))->withInput($request->except('password', '_token'))->withErrors(["Validation token has expired. Please try again"]);
+            }
+
+            elseif(Auth::guard('admin')->check()){
+                return redirect(route('admin.logout'))->withInput($request->except('password', '_token'))->withErrors(["Validation token has expired. Please try again"]);
+            }
+
+            elseif(Auth::guard('institution')->check()){
+                return redirect(route('institution.logout'))->withInput($request->except('password', '_token'))->withErrors(["Validation token has expired. Please try again"]);
+            }
+        }
+        return parent::render($request, $exception);
     }
 }

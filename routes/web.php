@@ -33,10 +33,10 @@ require __DIR__ . '/auth.php';
 Route::group(['prefix' => 'admin'], function () {
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+        return view('admin.dashboard');
+    })->middleware(['admin.auth:admin', 'verified'])->name('admin.dashboard');
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware('admin.auth:admin')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
@@ -44,5 +44,20 @@ Route::group(['prefix' => 'admin'], function () {
 
 });
 
-
 require __DIR__ . '/admin.php';
+
+Route::group(['prefix' => 'institution'], function () {
+
+    Route::get('/dashboard', function () {
+        return view('institution.dashboard');
+    })->middleware(['institution.auth:admin', 'verified'])->name('institution.dashboard');
+
+    Route::middleware('institution.auth:admin')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('institution.profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('institution.profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('institution.profile.destroy');
+    });
+
+});
+
+require __DIR__ . '/institution.php';

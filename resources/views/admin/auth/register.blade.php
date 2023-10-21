@@ -1,12 +1,12 @@
-<x-guest-layout>
+<x-admin.guest-layout>
     <form method="POST" action="{{ route('admin.register') }}">
         @csrf
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Admin Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <x-input-label for="username" :value="__('Admin Name')" />
+            <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
@@ -49,4 +49,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</x-admin.guest-layout>
