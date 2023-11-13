@@ -14,6 +14,6 @@ class AuthenticateInstitution extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        return $request->expectsJson() ? null : route('institution.login');
+        return $request->expectsJson() ? null : route('university.login');
     }
 }

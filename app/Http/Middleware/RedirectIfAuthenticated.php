@@ -21,18 +21,16 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 //Default route
-                redirect(RouteServiceProvider::DASHBOARD);
+                redirect(RouteServiceProvider::STUDENT_DASHBOARD);
 
                 if($guard == 'admin'){
                     return redirect(RouteServiceProvider::ADMIN_DASHBOARD);
                 }
 
-                if($guard == 'institution'){
-                    return redirect(RouteServiceProvider::INSTITUTION_DASHBOARD);
+                if($guard == 'university'){
+                    return redirect(RouteServiceProvider::UNIVERSITY_DASHBOARD);
                 }
             }
-
-
         }
         return $next($request);
     }

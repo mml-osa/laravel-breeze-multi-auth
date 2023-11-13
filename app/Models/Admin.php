@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Admin\AdminProfile;
+use App\Models\Student\StudentProfile;
 use App\Traits\UuidGenerator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,6 +24,12 @@ class Admin extends Authenticatable
         'username',
         'email',
         'password',
+        'is_admin',
+        'account',
+        'setup',
+        'active',
+        'created_by',
+        'updated_by'
     ];
 
     /**
@@ -43,4 +51,9 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    //Student RolesController Relations
+    public function adminProfile(){
+        return $this->hasOne(AdminProfile::class, 'user_id', 'id');
+    }
 }

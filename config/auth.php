@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'students',
     ],
 
     /*
@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'students',
         ],
 
         'admin' => [
@@ -46,15 +46,15 @@ return [
             'provider' => 'admins',
         ],
 
-        'institution' => [
+        'university' => [
             'driver' => 'session',
-            'provider' => 'institutions',
+            'provider' => 'university',
         ],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | User Providers
+    | Student Providers
     |--------------------------------------------------------------------------
     |
     | All authentication drivers have a user provider. This defines how the
@@ -70,9 +70,9 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'students' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Student::class,
         ],
 
         'admins' => [
@@ -80,9 +80,9 @@ return [
             'model' => App\Models\Admin::class,
         ],
 
-        'institutions' => [
+        'university' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Institution::class,
+            'model' => App\Models\University::class,
         ],
 
         // 'users' => [
@@ -111,8 +111,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'students' => [
+            'provider' => 'students',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
@@ -125,8 +125,8 @@ return [
             'throttle' => 60,
         ],
 
-        'institutions' => [
-            'provider' => 'institutions',
+        'university' => [
+            'provider' => 'university',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

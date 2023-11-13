@@ -1,0 +1,22 @@
+.module-img{
+	height: 200px;
+	width: 200px;
+	margin: auto;
+}
+
+.module-hover{
+	border-radius: 15px;
+	cursor: pointer
+}
+
+.module-hover:hover{
+	background-color: #1d367e;
+	color: white;
+	transition: 0.4s;
+}
+
+.module-hover:hover .card-title{
+	color: white;
+	transition: 0.4s;
+}
+/*# sourceMappingURL=custom.css.map */
