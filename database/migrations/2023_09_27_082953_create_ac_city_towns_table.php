@@ -12,8 +12,8 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::dropIfExists('ac_city_township');
-		Schema::create('ac_city_township', function (Blueprint $table) {
+		Schema::dropIfExists('ac_city_town');
+		Schema::create('ac_city_town', function (Blueprint $table) {
 			$table->uuid('id')->primary()->unique()->nullable(false);
 			$table->string('name')->nullable(false);
 			$table->string('slug')->nullable(false);
@@ -151,6 +151,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('ac_city_township');
+		Schema::dropIfExists('ac_city_town');
 	}
 };

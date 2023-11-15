@@ -1,5 +1,6 @@
 <x-student.guest-layout>
 	<title>Student Login || Admissions Checker</title>
+{{--	@section('title', Student Login || Admissions Checker)--}}
 	<!-- Session Status -->
 	<x-auth-session-status class="mb-4" :status="session('status')"/>
 	

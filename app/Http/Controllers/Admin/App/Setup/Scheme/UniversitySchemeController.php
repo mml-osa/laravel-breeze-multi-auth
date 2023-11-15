@@ -1,12 +1,13 @@
 <?php
 	
-	namespace App\Http\Controllers\Admin\App\Setup\Schools;
+	namespace App\Http\Controllers\Admin\App\Setup\Scheme;
 	
 	use App\Http\Controllers\Controller;
 	use App\Models\Setups\University\Universities;
+	use App\Models\Setups\University\UniversityScheme;
 	use Illuminate\Http\Request;
 	
-	class UniversityController extends Controller
+	class UniversitySchemeController extends Controller
 	{
 		/**
 		 * Display a listing of the resource.
@@ -14,8 +15,10 @@
 		public function index()
 		{
 			$universities = Universities::all();
-			return view('admin.app.setups.university.index')
-				->with('universities', $universities);
+			$universitySchemes = UniversityScheme::all();
+			return view('admin.app.setups.university.scheme')
+				->with('universities', $universities)
+				->with('universitySchemes', $universitySchemes);
 		}
 		
 		/**
@@ -31,14 +34,12 @@
 		 */
 		public function store(Request $request)
 		{
-			Universities::create([
-				'name' => $request->name,
-				'category_id' => $request->category_id,
-				'address' => $request->address,
-				'city_id' => $request->city_id,
-				'region_id' => $request->region_id,
-				'email' => $request->email,
-				'phone' => $request->phone,
+			UniversityScheme::create([
+				'university_id' => $request->university_id,
+				'course_id' => $request->course_id,
+				'cutoff_min' => $request->cutoff_min,
+				'cutoff_max' => $request->cutoff_max,
+				'is_fee_paying' => $request->is_fee_paying,
 			]);
 			return redirect()->back();
 		}
@@ -62,18 +63,15 @@
 		/**
 		 * Update the specified resource in storage.
 		 */
-		public function update(Request $request, $id)
+		public function update(Request $request, string $id)
 		{
 			try {
-				$slug = strtolower(preg_replace('/\s+/', '-', $request->name));
-				Universities::where('id',$id)->update([
-					'name' => $request->name,
-					'category_id' => $request->category_id,
-					'address' => $request->address,
-					'city_id' => $request->city_id,
-					'region_id' => $request->region_id,
-					'email' => $request->email,
-					'phone' => $request->phone,
+				UniversityScheme::where('id',$id)->update([
+					'university_id' => $request->university_id,
+					'course_id' => $request->course_id,
+					'cutoff_min' => $request->cutoff_min,
+					'cutoff_max' => $request->cutoff_max,
+					'is_fee_paying' => $request->is_fee_paying,
 				]);
 				return redirect()->back();
 			} catch (\Exception $e) { return redirect()->back()
@@ -86,7 +84,7 @@
 		 */
 		public function active(Request $request, $id)
 		{
-			Universities::where('id', $id)->update([
+			UniversityScheme::where('id', $id)->update([
 				'active' => $request->active
 			]);
 			return redirect()->back();
@@ -95,9 +93,9 @@
 		/**
 		 * Remove the specified resource from storage.
 		 */
-		public function destroy($id)
+		public function destroy(string $id)
 		{
-			Universities::where('id',$id)->delete();
+			UniversityScheme::where('id',$id)->delete();
 			return redirect()->back();
 		}
 	}

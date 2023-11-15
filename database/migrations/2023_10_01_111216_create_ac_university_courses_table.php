@@ -14,6 +14,7 @@
 			Schema::create('ac_university_course', function (Blueprint $table) {
 				$table->uuid('id')->primary()->unique()->nullable(false);
 				$table->string('name')->nullable(false);
+				$table->uuid('department_id')->nullable(true);
 				$table->string('slug')->nullable(false);
 				$table->text('description')->nullable(true);
 				$table->boolean('active')->default(true);

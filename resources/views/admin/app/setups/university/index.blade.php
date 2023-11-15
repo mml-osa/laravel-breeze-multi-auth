@@ -7,7 +7,7 @@
 			<div class="row">
 				<div class="col-12">
 					<div class="page-title-box d-sm-flex align-items-center justify-content-between">
-						<h4 class="mb-sm-0">GH Universities</h4>
+						<h4 class="mb-sm-0">Universities</h4>
 						
 						<div class="page-title-right">
 							<ol class="breadcrumb m-0">
@@ -27,7 +27,7 @@
 				<div class="col-lg-12">
 					<div class="card">
 						<div class="card-header">
-							<h5 class="card-title mb-0" style="float: left">Universities Datatable</h5>
+							<h5 class="card-title mb-0" style="float: left">All Universities Datatable</h5>
 							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create"
 											style="float: right"><i class="ri-add-circle-line align-middle me-1"></i> Add New
 							</button>
@@ -35,11 +35,10 @@
 						</div>
 						
 						<div class="card-body">
-							<table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
-										 style="width:100%">
+							<table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
 								<thead>
 								<tr>
-									<th data-ordering="false">School</th>
+									<th data-ordering="false">University</th>
 									<th data-ordering="false">Category</th>
 									<th data-ordering="false">Location</th>
 									<th data-ordering="false">Email</th>
@@ -53,134 +52,159 @@
 								@foreach($universities as $university)
 									<tr>
 										<td>{{$university->name ?? null}}</td>
-										<td>{{$university->name ?? null}}</td>
+										<td>{{$university->category['name'] ?? null}}</td>
 										<td>{{$university->address ?? null}} {{$university->adminProfile['other_name'] ?? null}}</td>
 										<td>{{$university->email ?? null}}</td>
 										<td>{{$university->phone ?? null}}</td>
 										<td class="m-auto" style="margin: auto">@if($university->active)
-												<button type="button" class="btn rounded-pill btn-success btn-xs">Yes</button>
+												<button type="button" class="btn btn-info waves-effect waves-light btn-xs" data-bs-toggle="modal" data-bs-target="#active{{$university->id}}">Yes</button>
 											@else
-												<button type="button" class="btn rounded-pill btn-danger waves-effect waves-light">No</button>
+												<button type="button" class="btn btn-warning waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#active{{$university->id}}">No</button>
 											@endif
 										</td>
 										<td>
-											<button type="button" class="btn btn-success " data-bs-toggle="modal"
-															data-bs-target="#editAdmin{{$university->id}}"><i class="ri-pencil-line"></i></button>
-											<button type="button" class="btn btn-danger " data-bs-toggle="modal"
-															data-bs-target="#deleteAdmin{{$university->id}}"><i class="ri-delete-bin-line"></i>
-											</button>
+											<button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#update{{$university->id}}"><i class="ri-pencil-line"></i></button>
+											<button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#delete{{$university->id}}"><i class="ri-delete-bin-line"></i></button>
 											
-											<!--  Extra Large modal example -->
-											<div class="modal fade" id="editAdmin{{$university->id}}" tabindex="-1" role="dialog"
-													 aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+											<!--  Update Record Modal -->
+											<div class="modal fade" id="update{{$university->id}}" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
 												<div class="modal-dialog modal-xl">
 													<div class="modal-content">
 														<div class="modal-header">
+{{--																														<h5 class="modal-title" id="myExtraLargeModalLabel">Admin Details [{{$university->adminProfile['first_name']}} {{$university->adminProfile['last_name']}}]</h5>--}}
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+														</div>
+														<div class="modal-body">
+															
+															<form method="POST" action="{{route('admin.setups.university.update',$university->id)}}">
+																@csrf
+																
+																<div class="row">
+																	<div class="col-lg-12">
+																		<div class="card">
+																			<div class="card-header align-items-center d-flex bg-success">
+																				<h4 class="card-title mb-0 m-auto text-white">University Details - {{$university->name ?? null}}</h4>
+																			</div><!-- end card header -->
+																			<div class="card-body">
+																				<div class="live-preview">
+																					<div class="row gy-4">
+																						
+																						<h5>University Details</h5>
+																						
+																						<div class="col-xxl-6 col-md-6">
+																							<div>
+																								<label for="name" class="form-label">Name of University</label>
+																								<input name="name" type="text" class="form-control" id="name" placeholder="Enter School Name" value="{{$university->name ?? null}}" autofocus required>
+																							</div>
+																						</div>
+																						<!--end col-->
+																						
+																						<div class="col-xxl-6 col-md-6">
+																							<label for="category_id" class="form-label">School Category</label>
+																							<select name="category_id" id="category_id" class="form-control" required>
+																								<option value="{{$university->category['id'] ?? null}}" selected hidden>{{$university->category['name'] ?? null}}</option>
+																								<?php $uniCategories = \App\Models\Setups\University\UniversityCategory::all() ?>
+																								@foreach($uniCategories as $uniCategory)
+																									<option value="{{$uniCategory->id}}">{{$uniCategory->name}}</option>
+																								@endforeach
+																							</select>
+																						</div>
+																						<!--end col-->
+																						
+																						<div class="col-xxl-6 col-md-6">
+																							<div>
+																								<label for="address" class="form-label">Address</label>
+																								<input name="address" type="text" class="form-control" id="address" placeholder="Enter School Address" value="{{$university->address}}" required>
+																							</div>
+																						</div>
+																						<!--end col-->
+																						
+																						<div class="col-xxl-6 col-md-6">
+																							<label for="city_id" class="form-label">School City/Township</label>
+																							<select name="city_id" id="city_id" class="form-control" required>
+																								<option value="{{$university->city['id'] ?? null}}" selected hidden>{{$university->city['name'] ?? null}}</option>
+																								<?php $cities = \App\Models\Setups\Location\CityTown::all()?>
+																								@foreach($cities as $city)
+																									<option value="{{$city->id}}">{{$city->name}}</option>
+																								@endforeach
+																							</select>
+																						</div>
+																						<!--end col-->
+																						
+																						<div class="col-xxl-6 col-md-6">
+																							<label for="region_id" class="form-label">School Region</label>
+																							<select name="region_id" id="region_id" class="form-control" required>
+																								<option value="{{$university->region['id'] ?? null}}" selected hidden>{{$university->region['name'] ?? null}}</option>
+																								<?php $regions = \App\Models\Setups\Location\RegionNew::all()?>
+																								@foreach($regions as $region)
+																									<option value="{{$region->id}}">{{$region->name}}</option>
+																								@endforeach
+																							</select>
+																						</div>
+																						<!--end col-->
+																						
+																						<div class="col-xxl-6 col-md-6">
+																							<div>
+																								<label for="placeholderInput" class="form-label">Email Address</label>
+																								<input name="email" type="text" class="form-control" id="placeholderInput" placeholder="Enter Email Address" value="{{$university->email}}" required>
+																							</div>
+																						</div>
+																						<!--end col-->
+																						
+																						<div class="col-xxl-6 col-md-6 mb-4">
+																							<div>
+																								<label for="phone" class="form-label">Phone Number</label>
+																								<input name="phone" type="text" class="form-control" id="phone" placeholder="Enter Phone Number" value="{{$university->phone}}" required>
+																							</div>
+																						</div>
+																						<!--end col-->
+																					
+																					</div>
+																					<!--end row-->
+																				</div>
+																			
+																			</div>
+																		</div>
+																	</div>
+																	<!--end col-->
+																</div>
+																<!--end row-->
+																
+																<div class="modal-footer">
+																	<a href="javascript:void(0);" class="btn btn-light link-success fw-medium"
+																		 data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+																	<button type="submit" class="btn btn-success ">Update Record</button>
+																</div>
+															
+															</form>
+														
+														</div>
+													</div><!-- /.modal-content -->
+												</div><!-- /.modal-dialog -->
+											</div><!-- /.modal -->
+											
+											<!--  Activate Record Modal -->
+											<div class="modal fade" id="active{{$university->id}}" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
 															{{--															<h5 class="modal-title" id="myExtraLargeModalLabel">Admin Details [{{$university->adminProfile['first_name']}} {{$university->adminProfile['last_name']}}]</h5>--}}
-															<button type="button" class="btn-close" data-bs-dismiss="modal"
-																			aria-label="Close"></button>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 														</div>
 														<div class="modal-body">
 															
 															<div class="row">
 																<div class="col-lg-12">
 																	<div class="card">
-																		<div class="card-header align-items-center d-flex bg-success">
-																			<h4 class="card-title mb-0 m-auto text-white">University Details
-																				- {{$university->adminProfile['first_name'] ?? null}} {{$university->adminProfile['last_name'] ?? null}}
-																				[{{$university->email ?? null}}]</h4>
+																		<div class="card-header align-items-center d-flex @if(!$university->active) bg-warning @else bg-info @endif">
+																			<h4 class="card-title mb-0 m-auto text-white">@if(!$university->active) Activate @else Deactivate @endif Record - {{$university->name ?? null}}</h4>
 																		</div><!-- end card header -->
 																		<div class="card-body">
 																			<div class="live-preview">
 																				<div class="row gy-4">
 																					
-																					<div class="col-xxl-6 col-md-6">
-																						<div>
-																							<label for="placeholderInput" class="form-label">Username</label>
-																							<input name="email" type="text" class="form-control" id="placeholderInput"
-																										 placeholder="Enter Username"
-																										 value="{{$university->username ?? null}}" required>
-																						</div>
-																					</div>
-																					<!--end col-->
-																					<div class="col-xxl-6 col-md-6">
-																						<div>
-																							<label for="placeholderInput" class="form-label">Email Address</label>
-																							<input name="email" type="text" class="form-control" id="placeholderInput"
-																										 placeholder="Enter Email Address"
-																										 value="{{$university->email ?? null}}"
-																										 required>
-																						</div>
-																					</div>
-																					<!--end col-->
-																					<div class="col-xxl-4 col-md-4">
-																						<div>
-																							<label for="first_name" class="form-label">First Name</label>
-																							<input name="first_name" type="text" class="form-control" id="first_name"
-																										 placeholder="Enter First Name"
-																										 value="{{$university->adminProfile['first_name'] ?? null}}"
-																										 required>
-																						</div>
-																					</div>
-																					<!--end col-->
-																					<div class="col-xxl-4 col-md-4">
-																						<div>
-																							<label for="labelInput" class="form-label">Last Name</label>
-																							<input name="last_name" type="text" class="form-control" id="labelInput"
-																										 placeholder="Enter Last Name"
-																										 value="{{$university->adminProfile['last_name'] ?? null}}"
-																										 required>
-																						</div>
-																					</div>
-																					<!--end col-->
-																					<div class="col-xxl-4 col-md-4">
-																						<div>
-																							<label for="placeholderInput" class="form-label">Other Name(s)</label>
-																							<input name="other_name" type="text" class="form-control"
-																										 id="placeholderInput" placeholder="Enter Other Name"
-																										 value="{{$university->adminProfile['other_name'] ?? null}}"
-																										 required>
-																						</div>
-																					</div>
-																					<!--end col-->
-																					<div class="col-xxl-6 col-md-6">
-																						<div>
-																							<label for="placeholderInput" class="form-label">Phone Number</label>
-																							<input name="phone" type="text" class="form-control" id="placeholderInput"
-																										 placeholder="Enter Phone Number"
-																										 value="{{$university->adminProfile['phone'] ?? null}}" required>
-																						</div>
-																					</div>
-																					<!--end col-->
-																					<div class="col-xxl-6 col-md-6">
-																						<div>
-																							<label for="placeholderInput" class="form-label">User Role</label>
-																							<input name="role" type="text" class="form-control" id="placeholderInput"
-																										 placeholder="Enter User Role" value="{{$university->role ?? null}}"
-																										 required>
-																						</div>
-																					</div>
-																					<!--end col-->
-																					<div class="col-xxl-6 col-md-6">
-																						<div>
-																							<label for="placeholderInput" class="form-label">Date Added</label>
-																							<input type="text" class="form-control"
-																										 value="{{$university->created_at->toDayDateTimeString() ?? null}}"
-																										 readonly
-																										 disabled required>
-																						</div>
-																					</div>
-																					<!--end col-->
-																					<div class="col-xxl-6 col-md-6">
-																						<div>
-																							<label for="input" class="form-label">Last Updated</label>
-																							<input type="text" class="form-control"
-																										 value="{{$university->updated_at->toDayDateTimeString() ?? null}}"
-																										 readonly
-																										 disabled required>
-																						</div>
-																					</div>
-																					<!--end col-->
+																					<h5 class="mt-5">Are you sure you want to @if(!$university->active) activate @else deactivate @endif this record.</h5>
+																				
 																				</div>
 																				<!--end row-->
 																			</div>
@@ -191,27 +215,28 @@
 																<!--end col-->
 															</div>
 															<!--end row-->
-															
-															<div class="modal-footer">
-																<a href="javascript:void(0);" class="btn btn-link link-success fw-medium"
-																	 data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
-																<button type="button" class="btn btn-success ">Update University Record</button>
-															</div>
 														
+														</div>
+														
+														<div class="modal-footer">
+															<form class="form-horizontal" method="post" action="{{ route('admin.setups.university.active',$university->id) }}">
+																@csrf
+																@if($university->active) <input type="hidden" name="active" value="0"> @else <input type="hidden" name="active" value="1"> @endif
+																<a href="javascript:void(0);" class="btn btn-light fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> No</a>
+																<button class="btn @if(!$university->active) btn-warning @else btn-info @endif" type="submit">Yes</button>
+															</form>
 														</div>
 													</div><!-- /.modal-content -->
 												</div><!-- /.modal-dialog -->
 											</div><!-- /.modal -->
 											
-											<!--  Extra Large modal example -->
-											<div class="modal fade" id="deleteAdmin{{$university->id}}" tabindex="-1" role="dialog"
-													 aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-												<div class="modal-dialog modal-lg">
+											<!--  Delete Record Modal -->
+											<div class="modal fade" id="delete{{$university->id}}" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+												<div class="modal-dialog">
 													<div class="modal-content">
 														<div class="modal-header">
 															{{--															<h5 class="modal-title" id="myExtraLargeModalLabel">Admin Details [{{$university->adminProfile['first_name']}} {{$university->adminProfile['last_name']}}]</h5>--}}
-															<button type="button" class="btn-close" data-bs-dismiss="modal"
-																			aria-label="Close"></button>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 														</div>
 														<div class="modal-body">
 															
@@ -219,16 +244,13 @@
 																<div class="col-lg-12">
 																	<div class="card">
 																		<div class="card-header align-items-center d-flex bg-danger">
-																			<h4 class="card-title mb-0 m-auto text-white">Delete University Record
-																				- {{$university->adminProfile['first_name'] ?? null}} {{$university->adminProfile['last_name'] ?? null}}
-																				[{{$university->email ?? null}}]</h4>
+																			<h4 class="card-title mb-0 m-auto text-white">Delete Record - {{$university->name ?? null}}</h4>
 																		</div><!-- end card header -->
 																		<div class="card-body">
 																			<div class="live-preview">
 																				<div class="row gy-4">
 																					
-																					<h5 class="mt-5">Are you sure you want to delete this account. <span
-																								class="text-danger">THIS CANNOT BE UNDONE!!!</span></h5>
+																					<h5 class="mt-5">Are you sure you want to delete this record. <span class="text-danger"><p>THIS CANNOT BE UNDONE!!!</p></span></h5>
 																				
 																				</div>
 																				<!--end row-->
@@ -243,11 +265,13 @@
 														
 														</div>
 														<div class="modal-footer">
-															<a href="javascript:void(0);" class="btn btn-link link-success fw-medium"
-																 data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
-															<a href="{{route('admin.users.destroy',$university->id)}}" class="btn btn-danger">Delete
-																Account</a>
+															<form class="form-horizontal" method="post" action="{{ route('admin.setups.university.destroy',$university->id) }}">
+																@csrf
+																<a href="javascript:void(0);" class="btn btn-light fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>No</a>
+																<button class="btn btn-danger" type="submit">Yes</button>
+															</form>
 														</div>
+													
 													</div><!-- /.modal-content -->
 												</div><!-- /.modal-dialog -->
 											</div><!-- /.modal -->
@@ -257,9 +281,8 @@
 								</tbody>
 							</table>
 							
-							<!--  Extra Large modal example -->
-							<div class="modal fade" id="create" tabindex="-1" role="dialog"
-									 aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+							<!--  Add New School -->
+							<div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
 								<div class="modal-dialog modal-xl">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -274,18 +297,19 @@
 													<div class="col-lg-12">
 														<div class="card">
 															<div class="card-header align-items-center d-flex bg-primary">
-																<h4 class="card-title mb-0 m-auto text-white">Add New School</h4>
+																<h4 class="card-title mb-0 m-auto text-white">Add New University</h4>
 															</div><!-- end card header -->
 															
 															<div class="card-body">
 																<div class="live-preview">
 																	<div class="row gy-4">
 																		
+																		<h5>School Details</h5>
+																		
 																		<div class="col-xxl-6 col-md-6">
 																			<div>
-																				<label for="name" class="form-label">Name of School</label>
-																				<input name="name" type="text" class="form-control" id="name"
-																							 placeholder="Enter School Name" required>
+																				<label for="name" class="form-label">Name of University</label>
+																				<input name="name" type="text" class="form-control" id="name" placeholder="Enter School Name" required>
 																			</div>
 																		</div>
 																		<!--end col-->
@@ -294,11 +318,9 @@
 																			<label for="category_id" class="form-label">School Category</label>
 																			<select name="category_id" id="category_id" class="form-control" required>
 																				<option value="" selected hidden>Select...</option>
-																				<?php
-																				$uniCategories = \App\Models\Setups\University\UniversityCategory::all()
-																				?>
-																				@foreach($uniCategories as $uniCategory)
-																					<option value="{{$uniCategory->id}}">{{$uniCategory->name}}</option>
+																				<?php $shsCategories = \App\Models\Setups\University\UniversityCategory::all() ?>
+																				@foreach($shsCategories as $shsCategory)
+																					<option value="{{$shsCategory->id}}">{{$shsCategory->name}}</option>
 																				@endforeach
 																			</select>
 																		</div>
@@ -316,9 +338,7 @@
 																			<label for="city_id" class="form-label">School City/Township</label>
 																			<select name="city_id" id="city_id" class="form-control" required>
 																				<option value="" selected hidden>Select...</option>
-																				<?php
-																				$cities = \App\Models\Setups\Location\CityTown::all()
-																				?>
+																				<?php $cities = \App\Models\Setups\Location\CityTown::all()?>
 																				@foreach($cities as $city)
 																					<option value="{{$city->id}}">{{$city->name}}</option>
 																				@endforeach
@@ -330,9 +350,7 @@
 																			<label for="region_id" class="form-label">School Region</label>
 																			<select name="region_id" id="region_id" class="form-control" required>
 																				<option value="" selected hidden>Select...</option>
-																				<?php
-																				$regions = \App\Models\Setups\Location\RegionNew::all()
-																				?>
+																				<?php $regions = \App\Models\Setups\Location\RegionNew::all()?>
 																				@foreach($regions as $region)
 																					<option value="{{$region->id}}">{{$region->name}}</option>
 																				@endforeach
@@ -343,43 +361,15 @@
 																		<div class="col-xxl-6 col-md-6">
 																			<div>
 																				<label for="placeholderInput" class="form-label">Email Address</label>
-																				<input name="email" type="text" class="form-control" id="placeholderInput"
-																							 placeholder="Enter Email Address" required>
+																				<input name="email" type="text" class="form-control" id="placeholderInput" placeholder="Enter Email Address" required>
 																			</div>
 																		</div>
 																		<!--end col-->
 																		
-																		<div class="col-xxl-6 col-md-6">
+																		<div class="col-xxl-6 col-md-6 mb-4">
 																			<div>
 																				<label for="phone" class="form-label">Phone Number</label>
 																				<input name="phone" type="text" class="form-control" id="phone" placeholder="Enter Phone Number" required>
-																			</div>
-																		</div>
-																		<!--end col-->
-																		
-																		<div class="col-xxl-6 col-md-6">
-																			<div>
-																				<label for="contact_name" class="form-label">Contact Name</label>
-																				<input name="contact_name" type="text" class="form-control" id="contact_name"
-																							 placeholder="Enter Contact Name" required>
-																			</div>
-																		</div>
-																		<!--end col-->
-																		
-																		<div class="col-xxl-6 col-md-6">
-																			<div>
-																				<label for="contact_email" class="form-label">Contact Email Address</label>
-																				<input name="contact_email" type="text" class="form-control" id="contact_email"
-																							 placeholder="Enter Contact Email Address" required>
-																			</div>
-																		</div>
-																		<!--end col-->
-																		
-																		<div class="col-xxl-6 col-md-6">
-																			<div>
-																				<label for="contact_phone" class="form-label">Contact Phone Number</label>
-																				<input name="contact_phone" type="text" class="form-control" id="contact_phone"
-																							 placeholder="Enter Contact Phone Number" required>
 																			</div>
 																		</div>
 																		<!--end col-->
@@ -391,8 +381,7 @@
 															<!--end row-->
 															
 															<div class="modal-footer">
-																<a href="javascript:void(0);" class="btn btn-link link-success fw-medium"
-																	 data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
+																<a href="javascript:void(0);" class="btn btn-light link-success fw-medium" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>
 																<button type="submit" class="btn btn-primary ">Save</button>
 															</div>
 														

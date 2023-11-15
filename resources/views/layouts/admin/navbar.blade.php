@@ -149,6 +149,10 @@
 											<a href="{{route('admin.setups.university-courses.index')}}" class="nav-link" data-key="t-courses"> Courses
 											</a>
 										</li>
+										<li class="nav-item">
+											<a href="{{route('admin.setups.university-scheme.index')}}" class="nav-link" data-key="t-courses"> Scheme
+											</a>
+										</li>
 									</ul>
 								</div>
 							</li>

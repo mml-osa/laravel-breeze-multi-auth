@@ -2,6 +2,8 @@
 
 namespace App\Models\Setups\University;
 
+use App\Models\Setups\Location\CityTown;
+use App\Models\Setups\Location\RegionNew;
 use App\Traits\CreatedUpdatedBy;
 use App\Traits\UuidGenerator;
 use Illuminate\Database\Eloquent\Model;
@@ -50,4 +52,19 @@ class Universities extends Model
 	protected $casts = [
 	
 	];
+	
+	//University CityTown Relations
+	public function category(){
+		return $this->hasOne(UniversityCategory::class, 'id', 'category_id');
+	}
+	
+	//University CityTown Relations
+	public function city(){
+		return $this->hasOne(CityTown::class, 'id', 'city_id');
+	}
+	
+	//University CityTown Relations
+	public function region(){
+		return $this->hasOne(RegionNew::class, 'id', 'region_id');
+	}
 }

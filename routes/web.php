@@ -10,6 +10,7 @@
 	use App\Http\Controllers\Admin\App\Setup\Location\CityController;
 	use App\Http\Controllers\Admin\App\Setup\Location\RegionController;
 	use App\Http\Controllers\Admin\App\Setup\Location\RegionNewController;
+	use App\Http\Controllers\Admin\App\Setup\Scheme\UniversitySchemeController;
 	use App\Http\Controllers\Admin\App\Setup\Schools\SeniorHighController;
 	use App\Http\Controllers\Admin\App\Setup\Schools\UniversityController;
 	use Illuminate\Support\Facades\Route;
@@ -137,45 +138,68 @@
 					Route::post('/active/{id}', [SeniorHighController::class, 'active'])->name('admin.setups.senior-high.active');
 					Route::post('/destroy/{id}', [SeniorHighController::class, 'destroy'])->name('admin.setups.senior-high.destroy');
 					
-					///UNIVERSITY SCHOOLS SETUPS ROUTES
-					Route::get('/university', [UniversityController::class, 'index'])->name('admin.setups.university.index');
-					Route::get('/university/create', [UniversityController::class, 'create'])->name('admin.setups.university.create');
-					Route::post('/university/store', [UniversityController::class, 'store'])->name('admin.setups.university.store');
-					Route::get('/university/destroy/{id}', [UniversityController::class, 'store'])->name('admin.setups.university.destroy');
+					Route::group(['prefix' => 'courses'], function () {
+						
+						//SHS COURSES SETUPS ROUTES
+						Route::get('/senior-high-courses', [SeniorHighCourseController::class, 'index'])->name('admin.setups.senior-high-courses.index');
+						Route::get('/senior-high-courses/create', [SeniorHighCourseController::class, 'create'])->name('admin.setups.senior-high-courses.create');
+						Route::post('/senior-high-courses/store', [SeniorHighCourseController::class, 'store'])->name('admin.setups.senior-high-courses.store');
+						Route::post('/senior-high-courses/update/{id}', [SeniorHighCourseController::class, 'update'])->name('admin.setups.senior-high-courses.update');
+						Route::post('/senior-high-courses/active/{id}', [SeniorHighCourseController::class, 'active'])->name('admin.setups.senior-high-courses.active');
+						Route::post('/senior-high-courses/destroy/{id}', [SeniorHighCourseController::class, 'destroy'])->name('admin.setups.senior-high-courses.destroy');
+						
+						//SHS CORES SETUPS ROUTES
+						Route::get('/senior-high-cores', [SeniorHighCoreController::class, 'index'])->name('admin.setups.senior-high-cores.index');
+						Route::get('/senior-high-cores/create', [SeniorHighCoreController::class, 'create'])->name('admin.setups.senior-high-cores.create');
+						Route::post('/senior-high-cores/store', [SeniorHighCoreController::class, 'store'])->name('admin.setups.senior-high-cores.store');
+						Route::post('/senior-high-cores/update/{id}', [SeniorHighCoreController::class, 'update'])->name('admin.setups.senior-high-cores.update');
+						Route::post('/senior-high-cores/active/{id}', [SeniorHighCoreController::class, 'active'])->name('admin.setups.senior-high-cores.active');
+						Route::post('/senior-high-cores/destroy/{id}', [SeniorHighCoreController::class, 'destroy'])->name('admin.setups.senior-high-cores.destroy');
+						
+						//SHS ELECTIVES SETUPS ROUTES
+						Route::get('/senior-high-electives', [SeniorHighElectiveController::class, 'index'])->name('admin.setups.senior-high-electives.index');
+						Route::get('/senior-high-electives/create', [SeniorHighElectiveController::class, 'create'])->name('admin.setups.senior-high-electives.create');
+						Route::post('/senior-high-electives/store', [SeniorHighElectiveController::class, 'store'])->name('admin.setups.senior-high-electives.store');
+						Route::post('/senior-high-electives/update/{id}', [SeniorHighElectiveController::class, 'update'])->name('admin.setups.senior-high-electives.update');
+						Route::post('/senior-high-electives/active/{id}', [SeniorHighElectiveController::class, 'active'])->name('admin.setups.senior-high-electives.active');
+						Route::post('/senior-high-electives/destroy/{id}', [SeniorHighElectiveController::class, 'destroy'])->name('admin.setups.senior-high-electives.destroy');
+					});
 				});
 				
-				Route::group(['prefix' => 'courses'], function () {
+				Route::group(['prefix' => 'university'], function () {
 					
-					//SHS COURSES SETUPS ROUTES
-					Route::get('/senior-high-courses', [SeniorHighCourseController::class, 'index'])->name('admin.setups.senior-high-courses.index');
-					Route::get('/senior-high-courses/create', [SeniorHighCourseController::class, 'create'])->name('admin.setups.senior-high-courses.create');
-					Route::post('/senior-high-courses/store', [SeniorHighCourseController::class, 'store'])->name('admin.setups.senior-high-courses.store');
-					Route::post('/senior-high-courses/update/{id}', [SeniorHighCourseController::class, 'update'])->name('admin.setups.senior-high-courses.update');
-					Route::post('/senior-high-courses/active/{id}', [SeniorHighCourseController::class, 'active'])->name('admin.setups.senior-high-courses.active');
-					Route::post('/senior-high-courses/destroy/{id}', [SeniorHighCourseController::class, 'destroy'])->name('admin.setups.senior-high-courses.destroy');
+					//UNIVERSITY SCHOOLS SETUPS ROUTES
+					Route::get('/', [UniversityController::class, 'index'])->name('admin.setups.university.index');
+					Route::get('/create', [UniversityController::class, 'create'])->name('admin.setups.university.create');
+					Route::post('/store', [UniversityController::class, 'store'])->name('admin.setups.university.store');
+					Route::post('/update/{id}', [UniversityController::class, 'update'])->name('admin.setups.university.update');
+					Route::post('/active/{id}', [UniversityController::class, 'active'])->name('admin.setups.university.active');
+					Route::post('/destroy/{id}', [UniversityController::class, 'destroy'])->name('admin.setups.university.destroy');
 					
-					//SHS CORES SETUPS ROUTES
-					Route::get('/senior-high-cores', [SeniorHighCoreController::class, 'index'])->name('admin.setups.senior-high-cores.index');
-					Route::get('/senior-high-cores/create', [SeniorHighCoreController::class, 'create'])->name('admin.setups.senior-high-cores.create');
-					Route::post('/senior-high-cores/store', [SeniorHighCoreController::class, 'store'])->name('admin.setups.senior-high-cores.store');
-					Route::post('/senior-high-cores/update/{id}', [SeniorHighCoreController::class, 'update'])->name('admin.setups.senior-high-cores.update');
-					Route::post('/senior-high-cores/active/{id}', [SeniorHighCoreController::class, 'active'])->name('admin.setups.senior-high-cores.active');
-					Route::post('/senior-high-cores/destroy/{id}', [SeniorHighCoreController::class, 'destroy'])->name('admin.setups.senior-high-cores.destroy');
+					Route::group(['prefix' => 'courses'], function () {
+						
+						//UNIVERSITY COURSES SETUPS ROUTES
+						Route::get('/', [UniversityCourseController::class, 'index'])->name('admin.setups.university-courses.index');
+						Route::get('/create', [UniversityCourseController::class, 'create'])->name('admin.setups.university-courses.create');
+						Route::post('/store', [UniversityCourseController::class, 'store'])->name('admin.setups.university-courses.store');
+						Route::post('/update/{id}', [UniversityCourseController::class, 'update'])->name('admin.setups.university-courses.update');
+						Route::post('/active/{id}', [UniversityCourseController::class, 'active'])->name('admin.setups.university-courses.active');
+						Route::post('/destroy/{id}', [UniversityCourseController::class, 'destroy'])->name('admin.setups.university-courses.destroy');
+					});
 					
-					//SHS ELECTIVES SETUPS ROUTES
-					Route::get('/senior-high-electives', [SeniorHighElectiveController::class, 'index'])->name('admin.setups.senior-high-electives.index');
-					Route::get('/senior-high-electives/create', [SeniorHighElectiveController::class, 'create'])->name('admin.setups.senior-high-electives.create');
-					Route::post('/senior-high-electives/store', [SeniorHighElectiveController::class, 'store'])->name('admin.setups.senior-high-electives.store');
-					Route::post('/senior-high-electives/update/{id}', [SeniorHighElectiveController::class, 'update'])->name('admin.setups.senior-high-electives.update');
-					Route::post('/senior-high-electives/active/{id}', [SeniorHighElectiveController::class, 'active'])->name('admin.setups.senior-high-electives.active');
-					Route::post('/senior-high-electives/destroy/{id}', [SeniorHighElectiveController::class, 'destroy'])->name('admin.setups.senior-high-electives.destroy');
-					
-					//UNIVERSITY COURSES SETUPS ROUTES
-					Route::get('/university-courses', [UniversityCourseController::class, 'index'])->name('admin.setups.university-courses.index');
-					Route::get('/university-courses/create', [UniversityCourseController::class, 'create'])->name('admin.setups.university-courses.create');
-					Route::post('/university-courses/store', [UniversityCourseController::class, 'store'])->name('admin.setups.university-courses.store');
-					Route::get('/university-courses/destroy/{id}', [UniversityCourseController::class, 'destroy'])->name('admin.setups.university-courses.destroy');
+					Route::group(['prefix' => 'scheme'], function () {
+						
+						//UNIVERSITY SCHEME SETUPS ROUTES
+						Route::get('/', [UniversitySchemeController::class, 'index'])->name('admin.setups.university-scheme.index');
+						Route::get('/create', [UniversitySchemeController::class, 'create'])->name('admin.setups.university-scheme.create');
+						Route::post('/store', [UniversitySchemeController::class, 'store'])->name('admin.setups.university-scheme.store');
+						Route::post('/update/{id}', [UniversitySchemeController::class, 'update'])->name('admin.setups.university-scheme.update');
+						Route::post('/active/{id}', [UniversitySchemeController::class, 'active'])->name('admin.setups.university-scheme.active');
+						Route::post('/destroy/{id}', [UniversitySchemeController::class, 'destroy'])->name('admin.setups.university-scheme.destroy');
+					});
 				});
+				
+				
 				
 			});
 			
