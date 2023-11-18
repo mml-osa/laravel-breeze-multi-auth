@@ -14,6 +14,7 @@
 			Schema::create('ac_admin_profile', function (Blueprint $table) {
 				$table->uuid('id')->primary()->unique()->nullable(false);
 				$table->uuid('user_id')->nullable(false);
+				$table->foreign('user_id')->references('id')->on('admins')->cascadeOnUpdate()->cascadeOnDelete();
 				$table->string('first_name')->nullable(false);
 				$table->string('last_name')->nullable(false);
 				$table->string('other_name')->nullable(true);

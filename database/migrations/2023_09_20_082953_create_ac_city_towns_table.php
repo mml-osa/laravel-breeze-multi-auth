@@ -17,7 +17,7 @@ return new class extends Migration {
 			$table->uuid('id')->primary()->unique()->nullable(false);
 			$table->string('name')->nullable(false);
 			$table->string('slug')->nullable(false);
-			$table->boolean('active')->default(false);
+			$table->boolean('active')->default(true);
 			$table->uuid('created_by')->nullable(true);
 			$table->uuid('updated_by')->nullable(true);
 			$table->softDeletesTz();

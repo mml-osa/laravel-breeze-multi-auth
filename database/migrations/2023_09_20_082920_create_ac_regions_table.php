@@ -18,7 +18,7 @@ return new class extends Migration
 		    $table->string('name')->nullable(false);
 		    $table->string('slug')->nullable(false);
 		    $table->string('capital')->nullable(false);
-		    $table->boolean('active')->default(false);
+		    $table->boolean('active')->default(true);
 		    $table->uuid('created_by')->nullable(true);
 		    $table->uuid('updated_by')->nullable(true);
 		    $table->softDeletesTz();

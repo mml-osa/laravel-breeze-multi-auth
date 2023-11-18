@@ -13,12 +13,15 @@ return new class extends Migration {
 		Schema::dropIfExists('ac_university');
 		Schema::create('ac_university', function (Blueprint $table) {
 			$table->uuid('id')->primary()->unique()->nullable(false);
-			$table->uuid('university_id')->unique()->nullable(true);
+//			$table->uuid('university_id')->unique()->nullable(true);
 			$table->string('name')->nullable(false);
 			$table->uuid('category_id')->nullable(false);
+			$table->foreign('category_id')->references('id')->on('ac_university_category')->cascadeOnDelete()->cascadeOnUpdate();
 			$table->string('address')->nullable(false);
 			$table->uuid('city_id')->nullable(false);
+			$table->foreign('city_id')->references('id')->on('ac_city_town')->cascadeOnUpdate();
 			$table->uuid('region_id')->nullable(false);
+			$table->foreign('region_id')->references('id')->on('ac_region_new')->cascadeOnUpdate();
 			$table->string('phone')->unique()->nullable(true);
 			$table->string('phone_2')->unique()->nullable(true);
 			$table->boolean('active')->default(true);

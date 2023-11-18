@@ -14,10 +14,12 @@
 			Schema::create('ac_student_profile', function (Blueprint $table) {
 				$table->uuid('id')->primary()->unique()->nullable(false);
 				$table->uuid('user_id')->nullable(false);
+				$table->foreign('user_id')->references('id')->on('students')->cascadeOnUpdate()->cascadeOnDelete();
 				$table->string('first_name')->nullable(false);
 				$table->string('last_name')->nullable(false);
 				$table->string('other_name')->nullable(true);
 				$table->uuid('gender_id')->nullable(true);
+				$table->foreign('gender_id')->references('id')->on('ac_gender')->cascadeOnUpdate();
 				$table->uuid('nationality_id')->nullable(false);
 				$table->string('residential_address')->nullable(false);
 				$table->string('gps_code')->nullable(true);

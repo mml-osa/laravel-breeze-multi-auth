@@ -10,18 +10,21 @@
 		 */
 		public function up(): void
 		{
-			Schema::dropIfExists('university');
-			Schema::create('university', function (Blueprint $table) {
+			Schema::dropIfExists('admins');
+			Schema::create('admins', function (Blueprint $table) {
 				$table->uuid('id')->primary()->unique()->nullable(false);
-				$table->string('email')->unique();
+				$table->string('username')->nullable();
+				$table->string('email')->unique()->nullable(false);
 				$table->timestamp('email_verified_at')->nullable();
-				$table->string('password');
+				$table->string('password')->nullable(false);
 				$table->rememberToken();
-				$table->boolean('is_university')->default(true);
+				$table->boolean('is_admin')->default(true);
+				$table->uuid('admin_role_id')->nullable(false);
+				$table->foreign('admin_role_id')->references('id')->on('ac_admin_role')->cascadeOnDelete()->cascadeOnUpdate();
 				$table->string('account')->nullable(false);
 				$table->boolean('setup')->default(false);
 				$table->boolean('active')->default(false);
-				$table->uuid('created_by')->nullable(false );
+				$table->uuid('created_by')->nullable(true);
 				$table->uuid('updated_by')->nullable(true);
 				$table->softDeletesTz();
 				$table->timestampsTz();
@@ -33,6 +36,6 @@
 		 */
 		public function down(): void
 		{
-			Schema::dropIfExists('university');
+			Schema::dropIfExists('admins');
 		}
 	};

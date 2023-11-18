@@ -73,7 +73,7 @@
 		});
 		
 		Route::group(['middleware' => ['setup'],  'namespace' => 'App'], function (){
-			Route::get('/', 'Profile\ProfileController@index')->name('admin.profile');
+			Route::get('/profile', 'Profile\ProfileController@index')->name('admin.profile');
 			Route::get('/dashboard', 'Dashboard\DashboardController@index')->name('admin.dashboard');
 
 			Route::group(['prefix' => 'profile'], function () {
@@ -83,6 +83,8 @@
 			Route::group(['prefix' => 'users'], function () {
 				Route::get('/admin/manage', [AdminController::class, 'index'])->name('admin.users.manage');
 				Route::post('/admin/create', [AdminController::class, 'create'])->name('admin.users.create');
+				Route::post('/admin/update/{id}', [AdminController::class, 'update'])->name('admin.users.update');
+				Route::post('/admin/active/{id}', [AdminController::class, 'active'])->name('admin.users.active');
 				Route::get('/admin/roles', [AdminController::class, 'roles'])->name('admin.users.roles');
 				Route::post('/admin/destroy/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
 				
@@ -196,6 +198,9 @@
 						Route::post('/update/{id}', [UniversitySchemeController::class, 'update'])->name('admin.setups.university-scheme.update');
 						Route::post('/active/{id}', [UniversitySchemeController::class, 'active'])->name('admin.setups.university-scheme.active');
 						Route::post('/destroy/{id}', [UniversitySchemeController::class, 'destroy'])->name('admin.setups.university-scheme.destroy');
+						
+						Route::get('/req-store/{id}', [UniversitySchemeController::class, 'reqUpdate'])->name('admin.setups.university-scheme-requirement.update');
+						Route::get('/req-destroy/{id}', [UniversitySchemeController::class, 'reqDestroy'])->name('admin.setups.university-scheme-requirement.destroy');
 					});
 				});
 				

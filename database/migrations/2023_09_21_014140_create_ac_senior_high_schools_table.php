@@ -15,9 +15,12 @@ return new class extends Migration {
 			$table->uuid('id')->primary()->unique()->nullable(false);
 			$table->string('name')->nullable(false);
 			$table->uuid('category_id')->nullable(false);
+			$table->foreign('category_id')->references('id')->on('ac_senior_high_category')->cascadeOnDelete()->cascadeOnUpdate();
 			$table->string('address')->nullable(false);
 			$table->uuid('city_id')->nullable(false);
+			$table->foreign('city_id')->references('id')->on('ac_city_town')->cascadeOnUpdate();
 			$table->uuid('region_id')->nullable(false);
+			$table->foreign('region_id')->references('id')->on('ac_region_new')->cascadeOnUpdate();
 			$table->string('email')->unique()->nullable(true);
 			$table->string('phone')->unique()->nullable(true);
 			$table->string('contact_name')->nullable(true);
